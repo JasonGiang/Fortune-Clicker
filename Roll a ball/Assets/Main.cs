@@ -6,16 +6,17 @@ public class Main : MonoBehaviour {
 	private Vector3 originScale;
 
 	//Declare Variables
-	public int TotalScore =0;
+	public int TotalScore = 98;
 	public GUIText Score; 
 	public GUIText CurrentTime;
 	public GUITexture Cookie;
+	public GUIText DisplayClickRate;
 	public int StartTime = 5;
 	public int Timer = 5; 
-	private int ClickRate = 10;
+	private int ClickRate = 1;
 
 	//Initialize Store Variables
-
+	public GameObject Factory;
 
 
 	// Use this for initialization
@@ -25,23 +26,23 @@ public class Main : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		//if (Timer != 0) {
-		//}
-			
+		DisplayClickRate.text = "Points Per Tap: " + ClickRate;
 		CurrentTime.text = "Timer: " + Timer;
 		Score.text = "Score: " + TotalScore;
-			CountDown ();
 
-			if (Mouse.onLeftButtonDown == currentSelected) {
-				originScale = currentSelected.transform.localScale;
-				currentSelected.transform.localScale *= 0.8f;
-			}
+		CountDown ();
+
+		if (Mouse.onLeftButtonDown == currentSelected) {
+			originScale = currentSelected.transform.localScale;
+			currentSelected.transform.localScale *= 0.8f;
+
+		}
 			
-			if (Mouse.onLeftButtonUp != null){
-				currentSelected.transform.localScale = originScale;
-			}
+		if (Mouse.onLeftButtonUp != null && Mouse.onLeftButtonUp == currentSelected ) {
+			currentSelected.transform.localScale = originScale;
+		};
 
+		Store ();
 
 
 	}
@@ -54,6 +55,22 @@ public class Main : MonoBehaviour {
 		TotalScore += ClickRate;
 	}
 
+	void Store(){
+		if (Mouse.onLeftButtonDown == Factory) {
+			if (TotalScore > 100) {
+				TotalScore -= 100;
+				ClickRate += 10;
+			} else {
+				NotEnoughMinterals();
+			}
+		}
+	}
 
+	void NotEnoughMinterals(){
+
+		Score.color = Color.red;
+
+	}
+	
 
 }
